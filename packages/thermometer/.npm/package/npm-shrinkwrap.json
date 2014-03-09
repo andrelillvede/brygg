@@ -1,0 +1,33 @@
+{
+  "dependencies": {
+    "ds18x20": {
+      "version": "0.1.1",
+      "dependencies": {
+        "async": {
+          "version": "0.2.10"
+        },
+        "sandal": {
+          "version": "1.0.1"
+        },
+        "execSync": {
+          "version": "1.0.1-pre",
+          "dependencies": {
+            "temp": {
+              "version": "0.5.1",
+              "dependencies": {
+                "rimraf": {
+                  "version": "2.1.4",
+                  "dependencies": {
+                    "graceful-fs": {
+                      "version": "1.2.3"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
