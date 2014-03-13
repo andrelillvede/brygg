@@ -1,0 +1,20 @@
+body {
+  font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  background: #FFFFFF;
+  color: #555555;
+  text-rendering: optimizeLegibility;
+  min-width: 320px;
+}
+
+.large.reading {
+	text-align: center;
+	font-size: 70px;
+}
+
+#temperature .refresh.icon {
+	cursor: pointer;
+}
+
+#temperature .refresh.icon:active {
+	color: black;
+};
