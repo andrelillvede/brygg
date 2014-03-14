@@ -2,7 +2,8 @@ var express = require('express');
 var net = require('net');
 var JsonSocket = require('json-socket');
 var array = require('array');
-var PID = require('./pid')
+var PID = require('./pid');
+var Store = require('./store');
 
 var app = express();
 app.configure(function () {
@@ -12,37 +13,32 @@ app.configure(function () {
     );
 });
 
-var queue = array();
 
-var port = 9838;
-var server = net.createServer();
-server.listen(port);
+var store = new Store();
+var io = require('socket.io').listen(9898);
 
-var s;
-server.on('connection', function(socket) { //This is a standard net.Socket
-  socket = new JsonSocket(socket); //Now we've decorated the net.Socket to be a JsonSocket
-  s = socket;
-
-  while(queue.length > 0){
-    s.sendMessage(queue.pop());
-  }
-
-  socket.on('close', function(){
-    console.log('SOCKET GOT CLOSED')
-    s = undefined;
+io.sockets.on('connection', function (socket) {
+  
+  store.forEach(function(task){
+    socket.emit('tasks', task);
   })
-
+  
 });
 
-queue.on('add', function(task) {
-  if(s)
-    s.sendMessage(queue.pop());
+store.on('add', function(task) {
+  io.sockets.emit('tasks', task);
 });
 
 
 app.get('/', function(req,res) {
   res.sendfile('public/index.html');
 });
+
+app.get('/test', function(req,res) {
+  store.add({type:'temp', id:'sensorId', time: Date.now(), value:20})
+});
+
+
 
 // TEMP
 // thermometer
@@ -61,7 +57,6 @@ app.get('/temp', function(req, res) {
 
 // HEATER
 
-// heater
 var Gpio = require('onoff').Gpio
 var heater = new Heater();
 var pid;
@@ -168,20 +163,3 @@ function Heater(){
 
 };
 
-
-/*
-
-/pid/start/<temp>   (PUT)
-/pid/stop           (GET)
-/pid/set/<temp>     (POST)
-/pid/reset          (POST)
-
-/temp               (GET)
-
-/heater/on          (GET)
-/heater/off         (GET)
-
-/pump/on            (GET)
-/pump/off           (GET)
-
-*/
