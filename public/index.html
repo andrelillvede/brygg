@@ -4,9 +4,14 @@
 	<title>BRYGG</title>
 	<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Open+Sans:300italic,400,300,700" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="libs/semantic-ui/css/semantic.css">
+	<link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.4.6/rickshaw.min.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.4.2/d3.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.4.6/rickshaw.min.js"></script>
+
 	<script src="js/main.js"></script>
 	<script src="libs/semantic-ui/javascript/semantic.js"></script>
 
@@ -15,6 +20,7 @@
 
 <div id="temperature" class="ui raised segment">
 	<h2>Temperatur <i class="refresh icon"></i></h2>
+	<div id="temp"></div>
 	<div class="large reading">-&deg;</div>
 </div>
 
