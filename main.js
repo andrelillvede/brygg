@@ -48,11 +48,30 @@ var sensor = require('ds18x20');
 function getTemp(){
 	return sensor.get(sensorId)
 }
+
 app.get('/temp', function(req, res) {
-  queue.push({type:'temp', id:'sensorId', time: Date.now(), value:getTemp()})
+  store.add({type:'temp', id:'28-000004cd61a9', time: Date.now(), value:getTemp()})
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({ value: getTemp() }));
 });
+
+var logInterval;
+app.get('/temp/logger/start', function(req, res) {
+  logInterval = setInterval(function(){
+    store.add({type:'temp', id:'28-000004cd61a9', time: Date.now(), value:getTemp()})
+  }, 5000)
+
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify({ loggerId: '1', status: 'started'}));
+});
+
+app.get('/temp/logger/stop', function(req, res) {
+  clearInterval(logInterval);
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify({ loggerId: '1', status: 'stopped'}));
+});
+
+
 
 
 // HEATER
@@ -73,7 +92,7 @@ app.get('/heater/off', function(req, res) {
   res.end(JSON.stringify({ value: heater.isOn() }));
 });
 
-app.get('/heater/startPidHeating', function(req, res) {
+app.get('/heater/pid/start', function(req, res) {
 	var setpoint = req.query.setpoint;
 	var sampleTime = req.query.sampletime;
 	var periodTime = req.query.periodtime;
@@ -83,7 +102,7 @@ app.get('/heater/startPidHeating', function(req, res) {
 	startPidHeating(sampleTime, periodTime);
 });
 
-app.get('/heater/stopPidHeating', function(req, res) {
+app.get('/heater/pid/stop', function(req, res) {
 	stopPidHeating();
 });
 
@@ -162,4 +181,6 @@ function Heater(){
   }
 
 };
+
+
 
